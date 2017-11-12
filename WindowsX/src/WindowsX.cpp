@@ -16,6 +16,10 @@ BOOL CALLBACK callBackProc(HWND hwnd, LPARAM lp){
 	return true;
 }
 
+void drawNotch(int x, int y){
+
+}
+
 int main() {
 	EnumWindows(callBackProc, 0);
 	Sleep(1000);
@@ -24,10 +28,14 @@ int main() {
 	for (unsigned i = 0; i < windows.size(); i++){
 		GetWindowText(windows[i], title, 1000);
 		DWORD dwStyle = (DWORD)GetWindowLong(windows[i], GWL_STYLE);
-		DWORD dwExStyle = (DWORD)GetWindowLong(windows[i], GWL_EXSTYLE);
+		RECT r;
 		if (IsWindowVisible(windows[i]) && strcmp("", title) != 0){
 			HWND parent = GetParent(windows[i]);
-			cout << title << " parent: " << parent << endl;
+			GetWindowRect(windows[i], &r);
+			if (r.bottom - r.top > 100 && r.right - r.left > 200){
+				cout << title << " parent: " << parent << " dwStyle: " << dwStyle << "(" << r.left << ", "
+						<< r.top << ", " << r.right << ", " << r.bottom << ")" << endl;
+			}
 		}
 	}
 }
